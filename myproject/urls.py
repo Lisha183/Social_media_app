@@ -23,5 +23,5 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.feed, name='feed'),  
-    path('myapp/', include('myapp.urls')),
+    path('', include('myapp.urls')),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
