@@ -83,13 +83,32 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://photo_hub_l1kt_user:i43WP24xEaG9jfQ1tKrp9TdwIXSEjW7r@dpg-d0tkrl6mcj7s73dllpp0-a.oregon-postgres.render.com/photo_hub_l1kt',
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://photo_hub_l1kt_user:i43WP24xEaG9jfQ1tKrp9TdwIXSEjW7r@dpg-d0tkrl6mcj7s73dllpp0-a.oregon-postgres.render.com/photo_hub_l1kt',
+        default='postgresql://photo_hub_l1kt_user:i43WP24xEaG9jfQ1tKrp9TdwIXSEjW7r@dpg-d0tkrl6mcj7s73dllpp0-a.oregon-postgres.render.com/photo_hub_l1kt',  # fallback if DATABASE_URL is not set
         conn_max_age=600,
-        ssl_require=True
+        conn_health_checks=True
     )
 }
+DATABASES = {
+    'default':{
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME': 'gallery',
+        'USER': 'alicia',
+        'PASSWORD': '123456',
+        'HOST': 'localhost', 
+        'PORT': '5432',
+    }
+}
+
+
 
 
 # Password validation
