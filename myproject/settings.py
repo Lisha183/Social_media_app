@@ -93,12 +93,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 #     )
 # }
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://photo_hub_l1kt_user:i43WP24xEaG9jfQ1tKrp9TdwIXSEjW7r@dpg-d0tkrl6mcj7s73dllpp0-a.oregon-postgres.render.com/photo_hub_l1kt',  # fallback if DATABASE_URL is not set
-        conn_max_age=600,
-        conn_health_checks=True
-    )
+    'default': dj_database_url.parse("postgresql://photo_hub_l1kt_user:i43WP24xEaG9jfQ1tKrp9TdwIXSEjW7r@dpg-d0tkrl6mcj7s73dllpp0-a.oregon-postgres.render.com/photo_hub_l1kt")
 }
+
 # DATABASES = {
 #     'default':{
 #         'ENGINE':'django.db.backends.postgresql',
