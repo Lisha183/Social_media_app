@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # User Model
 class User(AbstractUser):
@@ -66,7 +68,6 @@ class Profile(models.Model):
         return self.followers.count()
 
     def following_count(self):
-        # Use Follow model to count who this user is following
         return Follow.objects.filter(follower=self.user).count()
 
 class PostDislike(models.Model):
@@ -77,3 +78,7 @@ class PostDislike(models.Model):
     class Meta:
         unique_together = ('post', 'user')
 
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

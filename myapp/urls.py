@@ -10,8 +10,8 @@ urlpatterns = [
     path('', views.feed, name='feed'),
     path('feed/', views.feed, name='feed'),
     path('signup/', SignUpView.as_view(), name = 'signup'),
-    path('login/', CustomLoginView.as_view(), name = 'login'), # returns access and refresh token
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # refreshes access token
+    path('login/', CustomLoginView.as_view(), name = 'login'), 
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('posts/', PostView.as_view(), name='posts'),
     path('profile/<int:user_id>/', ProfileView.as_view(), name='profile'),
     path('unfollow/<int:user_id>/', views.unfollow_user, name='unfollow_user'),
@@ -24,5 +24,6 @@ urlpatterns = [
     path('follow/<int:user_id>/', FollowUserView.as_view(), name='follow_user'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('search/', views.user_search, name='user_search'),
 
 ]

@@ -16,11 +16,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.db.models import Q
 
-#  Home View 
-class HomeView(APIView):
-  def get(self, request):
-    return render(request, 'home.html')
+
 
 class SignUpView(CreateView):
     template_name = 'signup.html'
@@ -134,9 +132,18 @@ class CustomLoginView(LoginView):
     template_name = 'login.html'
     authentication_form = LoginForm
 
+
+    def form_valid(self, form):
+        print(f"User {form.get_user()} logged in successfully!")
+        response = super().form_valid(form)
+        print("Redirecting to:", self.get_success_url())
+        return response
+
+
 @login_required
 def feed(request):
-    posts = Post.objects.all().prefetch_related('post_dislikes', 'post_likes')  # prefetch related likes/dislikes
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    posts = Post.objects.all().prefetch_related('post_dislikes', 'post_likes')
     following_users = request.user.profile.following.values_list('id', flat=True)
     disliked_post_ids = PostDislike.objects.filter(user=request.user).values_list('post_id', flat=True) if request.user.is_authenticated else []
     liked_post_ids = Like.objects.filter(user=request.user, post__in=posts).values_list('post_id', flat=True)
@@ -174,13 +181,11 @@ def add_comment(request, post_id):
 def like_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
-    # Remove any existing dislike first
     PostDislike.objects.filter(post=post, user=request.user).delete()
 
-    # Toggle like: if exists, remove it; if not, create it
     like, created = Like.objects.get_or_create(post=post, user=request.user)
     if not created:
-        # Like exists, so remove it (toggle off)
+
         like.delete()
 
     return redirect(request.META.get('HTTP_REFERER', 'feed'))
@@ -190,13 +195,10 @@ def like_post(request, post_id):
 def dislike_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
-    # Remove any existing like first
     Like.objects.filter(post=post, user=request.user).delete()
 
-    # Toggle dislike: if exists, remove it; if not, create it
     dislike, created = PostDislike.objects.get_or_create(post=post, user=request.user)
     if not created:
-        # Dislike exists, so remove it (toggle off)
         dislike.delete()
 
     return redirect(request.META.get('HTTP_REFERER', 'feed'))
@@ -225,8 +227,7 @@ def like_post(request, post_id):
     if request.user in photo.disliked_by.all():
         photo.disliked_by.remove(request.user)
     photo.liked_by.add(request.user)
-    return redirect('feed')  # Assuming 'feed' is the name of your post list view
-
+    return redirect('feed')  
 @login_required
 def dislike_post(request, post_id):
     photo = get_object_or_404(Post, pk=post_id)
@@ -247,7 +248,7 @@ def unfollow_user(request, user_id):
 def followers_list_view(request, username):
     user = get_object_or_404(User, username=username)
     profile = user.profile
-    followers = profile.followers.all()  # Assuming this is a related manager for followers
+    followers = profile.followers.all() 
 
     return render(request, 'followers_list.html', {
         'profile_user': user,
@@ -268,3 +269,18 @@ def following_list_view(request, username):
 def user_profile_view(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'profile.html', {'user': user})
+
+
+def user_search(request):
+    query = request.GET.get('q', '')
+    profiles = Profile.objects.select_related('user')
+
+    if query:
+        profiles = profiles.filter(
+            Q(user__username__icontains=query) |
+            Q(user__first_name__icontains=query) |
+            Q(user__last_name__icontains=query)
+        )
+
+    return render(request, 'user_search_results.html', {'profiles': profiles, 'query': query})
+

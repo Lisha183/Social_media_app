@@ -7,6 +7,12 @@
 
     <form method="post" class="space-y-4">
       {% csrf_token %}
+      {% if form.non_field_errors %}
+  <div class="text-red-600 mb-4">
+    {{ form.non_field_errors }}
+  </div>
+{% endif %}
+
       {% for field in form %}
         <div>
           <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
