@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4">{{ profile_user.username }} is following</h2>
+
+  {% if following %}
+    <ul class="space-y-4">
+      {% for user in following %}
+        <li class="flex items-center gap-4 p-3 border rounded shadow">
+          {% if user.profile.profile_picture %}
+            <img src="{{ user.profile.profile_picture.url }}" alt="Profile Pic" class="w-12 h-12 rounded-full object-cover">
+          {% else %}
+            <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
+              {{ user.username|slice:":1" }}
+            </div>
+          {% endif %}
+          <a href="{% url 'user_profile' user.username %}" class="text-lg font-medium hover:underline">
+            {{ user.username }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-500">Not following anyone yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

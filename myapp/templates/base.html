@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>SocialApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <nav class="bg-white p-4 shadow-md flex justify-between items-center">
+        <a href=" " class="text-2xl font-extrabold text-indigo-600 hover:text-indigo-800">SocialApp</a>
+        
+        {% if user.is_authenticated %}
+        <div class="flex items-center space-x-6">
+            <a href="{% url 'feed' %}" class="text-indigo-600 hover:text-indigo-800 font-semibold">Home</a>
+
+            <span class="text-gray-700 font-medium">Hi, <a href="{% url 'profile' user.id %}" class="underline hover:text-indigo-600">{{ user.username }}</a></span>
+            
+            <a href="{% url 'login' %}" class="text-red-500 hover:text-red-700 font-semibold">Logout</a>
+        </div>
+        {% else %}
+            <a href="{% url 'login' %}" class="text-indigo-600 hover:text-indigo-800 font-semibold">Login</a>
+        {% endif %}
+    </nav>
+    
+    <main class="max-w-4xl mx-auto p-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
