@@ -99,16 +99,16 @@ DATABASES = {
         conn_health_checks=True
     )
 }
-DATABASES = {
-    'default':{
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME': 'gallery',
-        'USER': 'alicia',
-        'PASSWORD': '123456',
-        'HOST': 'localhost', 
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default':{
+#         'ENGINE':'django.db.backends.postgresql',
+#         'NAME': 'gallery',
+#         'USER': 'alicia',
+#         'PASSWORD': '123456',
+#         'HOST': 'localhost', 
+#         'PORT': '5432',
+#     }
+# }
 
 
 
@@ -160,4 +160,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = 'myapp.User'
-LOGIN_REDIRECT_URL = '/feed/'
+LOGIN_REDIRECT_URL = '/myapp/feed/'
