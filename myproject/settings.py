@@ -157,4 +157,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = 'myapp.User'
-LOGIN_REDIRECT_URL = '/myapp/feed/'
+LOGIN_REDIRECT_URL = '/feed/'

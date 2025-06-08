@@ -17,6 +17,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
+from django.contrib.auth import logout
+
 
 
 
@@ -138,6 +140,11 @@ class CustomLoginView(LoginView):
         response = super().form_valid(form)
         print("Redirecting to:", self.get_success_url())
         return response
+
+def logout_view(request):
+    logout(request)
+    print("Logged out:", request.user.is_authenticated) 
+    return redirect('login')  
 
 
 @login_required
@@ -270,7 +277,7 @@ def user_profile_view(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'profile.html', {'user': user})
 
-
+@login_required(login_url='login')
 def user_search(request):
     query = request.GET.get('q', '')
     profiles = Profile.objects.select_related('user')

@@ -17,11 +17,11 @@
 
             <span class="text-gray-700 font-medium">Hi, <a href="{% url 'profile' user.id %}" class="underline hover:text-indigo-600">{{ user.username }}</a></span>
             
-            <a href="{% url 'login' %}" class="text-red-500 hover:text-red-700 font-semibold">Logout</a>
+            <a href="{% url 'logout' %}" class="text-red-500 hover:text-red-700 font-semibold">Logout</a>
             <form method="get" action="{% url 'user_search' %}" style="display: flex; gap: 8px;">
-                <input type="text" name="q" placeholder="Search users..." />
-                <button type="submit">Search</button>
-            </form>
+            <input type="text" name="q" placeholder="Search users..." />
+            <button type="submit">Search</button>
+        </form>
         </div>
         {% else %}
             <a href="{% url 'login' %}" class="text-indigo-600 hover:text-indigo-800 font-semibold">Login</a>
