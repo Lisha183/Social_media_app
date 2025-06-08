@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 # User Model
 class User(AbstractUser):
-    profile_picture = models.ImageField(upload_to='profles/', null = True, blank = True)
+    profile_picture = models.ImageField(upload_to='profiles/', null = True, blank = True)
     bio = models.TextField(blank= True)
 
 # Post Model
